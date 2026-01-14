@@ -1,0 +1,5 @@
+num1=int(input("Ingrese el primer numero: "))
+num2=int(input("Ingrese el segudo numero: "))
+num3=int(input("Ingrese el tercer numero: "))
+highest_num=max(num1,num2,num3)
+print("El numero mas alto es:",highest_num)
