@@ -1,0 +1,86 @@
+[
+    {
+        "name": "Pikachu",
+        "type": [
+            "Electric"
+        ],
+        "base": {
+            "HP": 35,
+            "Attack": 55,
+            "Defense": 40,
+            "sp_attack": 50,
+            "sp_defense": 50,
+            "Speed": 90
+        }
+    },
+    {
+        "name": "Charmander",
+        "type": [
+            "Fire"
+        ],
+        "base": {
+            "HP": 39,
+            "Attack": 52,
+            "Defense": 43,
+            "sp_attack": 60,
+            "sp_defense": 50,
+            "Speed": 65
+        }
+    },
+    {
+        "name": "Squirtle",
+        "type": [
+            "Water"
+        ],
+        "base": {
+            "HP": 44,
+            "Attack": 48,
+            "Defense": 65,
+            "sp_attack": 50,
+            "sp_defense": 64,
+            "Speed": 43
+        }
+    },
+    {
+        "name": "snorlax",
+        "type": [
+            "water"
+        ],
+        "base": {
+            "HP": 10,
+            "Attack": 20,
+            "Defense": 30,
+            "sp_attack": 40,
+            "sp_defense": 50,
+            "Speed": 60
+        }
+    },
+    {
+        "name": "cunt",
+        "type": [
+            "cunty"
+        ],
+        "base": {
+            "HP": 20,
+            "Attack": 20,
+            "Defense": 20,
+            "sp_attack": 20,
+            "sp_defense": 20,
+            "Speed": 20
+        }
+    },
+    {
+        "name": "cunt2",
+        "type": [
+            "ddd"
+        ],
+        "base": {
+            "HP": 20,
+            "Attack": 20,
+            "Defense": 20,
+            "sp_attack": 20,
+            "sp_defense": 20,
+            "Speed": 20
+        }
+    }
+]
