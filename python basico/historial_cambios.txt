@@ -1,0 +1,1 @@
+Hola, cumpliendo con los ejercicios extra, el motivo de todos los commits hasta el momento ha sido parte de las intrucciones del curso. Por ahora solo tengo en GitHub lo que me habian indicado que creara en el primer ejercicio, gracias por el feedback y ahi voy a seguir familiarizandome con git/GitHub.
