@@ -4,13 +4,13 @@ import os
 base_dir=os.path.dirname(os.path.abspath(__file__))
 file_path=os.path.join(base_dir,"systemControl.csv")
 
-def students_csv():
+def import_csv(target):
     students=[]
-    if not os.path.exists(file_path):
+    if not os.path.exists(target):
         print("Error, file not found.")
         return students
     try:
-        with open(file_path,newline="",encoding="utf-8")as file:
+        with open(target,mode="r",newline="",encoding="utf-8")as file:
             reader=csv.DictReader(file)
             for row in reader:
                 student={
@@ -23,36 +23,18 @@ def students_csv():
                     "average":None 
             }
             students.append(student)
-    except KeyError:
-        print("Error: CSV file has invalid or missing data.")
-    except ValueError:
-        print("Error: one or more grades have invalid characters/numbers.")
+        return students
     except Exception as e:
-        print(f"Unexpected error: {e}")
-    return students
+        print(f"Error reading file: {e}")
+        return []
 
-def create_students_csv(students):
+def save_to_csv(students,target):
     try:
-        with open(file_path,"w",newline="",encoding="utf-8")as file:
-            user_names=[
-                "name",
-                "section",
-                "english",
-                "spanish",
-                "history",
-                "chemistry"
-            ]
-            writer=csv.DictWriter(file,fieldnames=user_names)
+        with open(target,mode="w",newline="",encoding="utf-8")as file:
+            fields=["name","section","english","spanish","history","chemistry"]
+            writer=csv.DictWriter(file,fieldnames=fields)
             writer.writeheader()
             for student in students:
-                writer.writerow({
-                    "name":student["name"],
-                    "section":student["section"],
-                    "english":student["english"],
-                    "spanish":student["spanish"],
-                    "history":student["history"],
-                    "chemistry":student["chemistry"]
-                })
-        print("student data saved to CSV file.")
+                writer.writerow(student)
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error saving file: {e}")
