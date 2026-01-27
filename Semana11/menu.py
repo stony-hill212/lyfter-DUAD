@@ -1,15 +1,14 @@
 def show_menu():
-    print("\nChoose an option:")
-    print("1 - Import names and data from CSV file")
-    print("2 - Enter the data manually")
-    option=input("Enter option 1 or 2: ").strip()
-    return option
-
-def ask_user(prompt):
-    while True:
-        choice=input(prompt).strip().lower()
-        if choice in("y","yes"):
-            return True
-        elif choice in("n","no"):
-            return False
-        print("Invalid input, please enter y/yes or n/no.")
+    print("\n"+"-"*40)
+    print("Student control system - Menu:")
+    print("-"*40)
+    print("1. Press 1 to add students")
+    print("2. Press 2 to view the list of students")
+    print("3. Press 3 to see the top 3 students")
+    print("4. Press 4 to view the overall class average")
+    print("5. Press 5 to see the failed students")
+    print("6. Press 6 to delete a student")
+    print("7. Press 7 to export to a CSV file")
+    print("8. Press 8 to import from a CSV file")
+    print("9. Exit the program")
+    return input("Select a number (1-9): ").strip()
