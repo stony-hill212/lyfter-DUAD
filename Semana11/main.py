@@ -1,82 +1,49 @@
-import sys
-from menu import show_menu,ask_user
-from data import students_csv,create_students_csv
-from actions import (
-    manual_list,
-    single_student,
-    calculate_averages,
-    get_top3,
-    calculate_total_ave,
-    get_failed_students,
-    find_student,
+from menu import show_menu
+from actions import(
+    add_student,
+    show_students,
+    show_top3,
+    class_average,
+    failed_students,
     delete_student
 )
+from data import import_csv,save_to_csv
+
 def main():
-    print("=== Student control system ===")
-    option=show_menu()
-    while option not in ("1","2"):
-        print("Invalid option. Please select 1 or 2.")
+    students=[]
+    while True:
         option=show_menu()
-    if option=="1":
-        students=students_csv()
-    elif option=="2":
-        students=manual_list()
-        create_students_csv(students)
-    if not students:
-        print("No data available.")
-        return
-    calculate_averages(students)
-    top_students=get_top3(students,top_n=3)
-    global_ave=calculate_total_ave(students)
-    print("\n---Top 3 students---")
-    for student in top_students:
-        print(
-            f"{student['name']} | "
-            f"Section: {student['section']} | "
-            f"Average: {student['average']:.2f}"
-        )
-    print(f"\nClass average: {global_ave:.2f}")
-    if ask_user("\nwould you like to see the failed students? (y/n):"):
-        failed_students=get_failed_students(students)
-        if not student:
-                print("student not found.")
-        else:
-            print(
-                    f"Found: {student['name']} | "
-                    f"section: {student['section']}"
-                )
-        if ask_user("are you sure you want to remove this student: (y/n)"):
-                    delete_student(students,student)
-                    create_students_csv(students)
-                    print("removal successful.")
-        else:
-            print("deletion canceled.")
-    if ask_user("\nwould you like to delete a student?(y/n): "):
-        while True:
-            name=input("Please enter the name of the student: ").strip()
-            section=input("\nenter the section: ").strip()
-            student=find_student(students,name,section)
-            if not student:
-                print("student not found.")
-                if not ask_user("try again."):
-                    break
+        if option=="1":
+            add_student(students)
+        elif option=="2":
+            show_students(students)
+        elif option=="3":
+            show_top3(students)
+        elif option=="4":
+            class_average(students)
+        elif option=="5":
+            failed_students(students)
+        elif option=="6":
+            delete_student(students)
+        elif option=="7":
+            select_file=input("Enter the name of the file to export (ex: systemControl.csv): ").strip()
+            save_to_csv(students,select_file)
+            print("Data exported successfully.")
+        elif option=="8":
+            select_file=input("Enter the name of the file to import (ex: systemControl.csv): ").strip()
+            imported=import_csv(select_file)
+            if imported:
+                students.extend(imported)
+                print(f"{len(imported)} student(s) imported.")
             else:
-                print(f"found: {student['name']} | section {student['section']}")
-                if ask_user("are you sure you want to remove this student: (y/n)"):
-                    delete_student(students,student)
-                    create_students_csv(students)
-                    print("student removed")
-                else:
-                    print("deletion canceled.")
-                break
-    if option=="1":
-        if ask_user("\nWould you like to add another student?(y/n): "):
-            new_student=single_student()
-            students.append(new_student)
-            create_students_csv(students)
-            print("student added successfully.")
-            
-    
+                print("No data imported.")
+        elif option=="9":
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid option, please enter a number from 1-9.")
+
 if __name__=="__main__":
     main()
+
     
