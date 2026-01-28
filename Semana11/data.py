@@ -22,7 +22,7 @@ def import_csv(target):
                     "chemistry":float(row["chemistry"]),
                     "average":None 
             }
-            students.append(student)
+                students.append(student)
         return students
     except Exception as e:
         print(f"Error reading file: {e}")
@@ -38,3 +38,4 @@ def save_to_csv(students,target):
                 writer.writerow(student)
     except Exception as e:
         print(f"Error saving file: {e}")
+
