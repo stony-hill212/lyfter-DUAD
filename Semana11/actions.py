@@ -13,7 +13,7 @@ def valid_name(target):
     
 def valid_section():
     while True:
-        section=input("Enter the section (ex: 7A): ").strip().lower().replace(" ","")
+        section=input("Enter the section (ex: 7A): ").strip().upper().replace(" ","")
         if not re.fullmatch(r"\d{1,2}[A-Z]",section):
             print("Invalid format, use a number + a letter.")
             continue
@@ -125,3 +125,4 @@ def delete_student(target):
                 print("No students deleted.")
                 return
     print("Student not found.")
+
