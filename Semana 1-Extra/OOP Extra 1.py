@@ -1,26 +1,25 @@
 class Rectangle:
     def __init__(self,width,height):
-        self.width=width
-        self.height=height
+        self.width=self.get_positive(width,"width")
+        self.height=self.get_positive(height,"height")
+    
+    def get_positive(self,value,name):
+        if value<0:
+            raise ValueError(f"Error: {name}, value must be a positive number.")
+        return value
     
     def get_area(self):
-        return self.width*self.height
+        return self.height*self.width
     
     def get_perimeter(self):
         return 2*(self.height+self.width)
+try:
+    w=float(input("Please enter the width: "))
+    h=float(input("Please enter the height: "))
+    rectangle=Rectangle(w,h)
+except ValueError as e:
+    print(f"Invalid input:{e}")
 
-def get_positive(target):
-    while True:
-        try:
-            number=float(input(target))
-            if number<=0:
-                raise ValueError("Value must be greater than 0")
-            return number
-        except ValueError as e:
-            print(f"Ivalid input: {e}")
-
-height=get_positive("Please enter the height: ")
-width=get_positive("Please enter the width: ")
-rectangle=Rectangle(width,height)
 print(rectangle.get_area())
 print(rectangle.get_perimeter())
+
