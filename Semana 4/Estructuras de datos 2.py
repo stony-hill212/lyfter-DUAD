@@ -30,6 +30,28 @@ class Deque:
             self.tail.next=new_node
             self.tail=new_node
     
+    def pop_left(self):
+        if self.is_empty():
+            raise Exception("Deque is empty.")
+        removed_node=self.head
+        if self.head==self.tail:
+            self.head=self.tail=None
+        else:
+            self.head=self.head.next
+            self.head.prev=None
+        return removed_node.data
+    
+    def pop_right(self):
+        if self.is_empty():
+            raise Exception("Deque is empty.")
+        removed_node=self.head
+        if self.head==self.tail:
+            self.head=self.tail=None
+        else:
+            self.tail=self.tail.prev
+            self.tail.next=None
+        return removed_node.data
+    
     def print_queue(self):
         if self.is_empty():
             print("Deque is empty")
@@ -48,3 +70,9 @@ dq.push_right(20)
 dq.push_right(30)
 
 dq.print_queue()
+
+print("Pop left:", dq.pop_left())
+print("Pop right:", dq.pop_right())
+
+dq.print_queue()
+
