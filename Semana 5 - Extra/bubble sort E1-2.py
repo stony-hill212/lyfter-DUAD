@@ -44,7 +44,7 @@ class Deque:
     def pop_right(self):
         if self.is_empty():
             raise Exception("Deque is empty.")
-        removed_node=self.head
+        removed_node=self.tail
         if self.head==self.tail:
             self.head=self.tail=None
         else:
@@ -87,3 +87,4 @@ dq.print_queue()
 dq.bubble_sort()
 
 dq.print_queue()
+
