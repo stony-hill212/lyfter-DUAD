@@ -69,7 +69,7 @@ class Deque:
         end=None
         swapped=None
         while swapped:
-            swapped=False
+            swapped=True
             current=self.head
             while current.next!=end:
                 if current.data>current.next.data:
@@ -85,4 +85,5 @@ dq.push_right(3)
 dq.push_right(2)
 dq.print_queue()
 dq.bubble_sort()
+
 dq.print_queue()
