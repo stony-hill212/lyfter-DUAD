@@ -10,12 +10,10 @@ def add_formula(n):
     return number * (number + 1) // 2  #O(1)
 
 
-#Respuesta:
-#Seria la misma complejidad en ambas versiones, ya que, segun mi entendimiento, 
-# Big O seria para clasificar dificultad del algoritmo y no un valor determinado.
+#Respuestas: 
 
-#En la version 1 tendria 1 000 000 000 de iteraciones pero el tiempo incrementa directamente con n,
-#por lo cual el valor la variable "number" es irrelevante.
+#1. #O(n), #O(1)
 
-# La version 2 resuelve 3 operaciones aritmeticas, 
-# pero el tiempo en correr la operacion es el mismo sin importar el valor numerico. 
+#2.Si number= 1000 000 000, tendriamos que usar la version 2 ya que a diferencia de la version 1, 
+#la version 2 ejecuta varias operacioness aritmicas a la vez y n no aumenta el tiempo, por lo cual, la verion 2
+#tendria la misma velocidad si n fuese 10 o 100000000.
