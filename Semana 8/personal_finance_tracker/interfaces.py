@@ -33,7 +33,7 @@ class FinanceInterface:
             ],
             [
                 sg.Button("Add category"),
-                sg.Button("Add expense"),
+                sg.Button("Add expenses"),
                 sg.Button("Add income"),
                 sg.Button("Export CSV"),
                 sg.Button("Exit")
@@ -125,10 +125,10 @@ class FinanceInterface:
                 break
             if event=="Add category":
                 self.handle_add_category()
-            elif event=="Add expense":
-                self.handle_add_movement("Expense")
+            elif event=="Add expenses":
+                self.handle_add_movement("expenses")
             elif event=="Add income":
-                self.handle_add_movement("Income")
+                self.handle_add_movement("income")
             elif event=="Filter":
                 self.handle_filter(values)
             elif event=="Export CSV":
