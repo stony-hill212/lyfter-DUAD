@@ -1,7 +1,7 @@
 from datetime import datetime
 from persistence import export_to_csv,load_from_csv
 
-date_format="%d/%m/Y%"
+date_format="%d/%m/%Y"
 
 class Category:
     def __init__(self,name,color):
@@ -24,12 +24,12 @@ class Movement:
             "date":self.date.strftime("%d/%m/%Y"),
             "title":self.title,
             "category":self.category.name,
-            "type":self.type,
+            "type":self.movement_type,
             "amount":self.amount
         }
     
     def __repr__(self):
-        return f"{self.type} | {self.title} | {self.amount}"
+        return f"{self.movement_type} | {self.title} | {self.amount}"
 
 class FinanceTracker:
     def __init__(self):
@@ -94,14 +94,14 @@ class FinanceTracker:
     def total_income(self):
         total=0
         for m in self.movements:
-            if m.type=="Income":
+            if m.type=="income":
                 total+=m.amount
         return total
     
     def total_expenses(self):
         total=0
         for m in self.movements:
-            if m.type=="Expenses":
+            if m.type=="expenses":
                 total+=m.amount
         return total
     
@@ -118,4 +118,5 @@ class FinanceTracker:
             "balance":self.balance()
         }
         export_to_csv(rows,totals)
+
 
