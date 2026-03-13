@@ -190,3 +190,4 @@ class FinanceInterface:
             return
         movements=self.tracker.filter_by_date(start,end)
         self.update_table(movements)
+
