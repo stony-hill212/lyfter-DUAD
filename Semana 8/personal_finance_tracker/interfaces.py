@@ -102,7 +102,7 @@ class FinanceInterface:
                 m.date.strftime(date_format),
                 m.title,
                 m.category.name,
-                m.type,
+                m.movement_type,
                 m.amount
             ])
         self.window["-TABLE-"].update(values=data)
