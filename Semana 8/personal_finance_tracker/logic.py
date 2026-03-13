@@ -38,6 +38,21 @@ class FinanceTracker:
         self.movements=[]
         self.load_existing_data()
 
+    def load_existing_data(self):
+        rows=load_from_csv()
+        for row in rows:
+            category_name=row["category"]
+            if category_name not in self.categories:
+                self.categories[category_name]=Category(category_name,"#CCCCCC")
+            movement=Movement(
+                row["title"],
+                row["amount"],
+                self.categories[category_name],
+                row["type"],
+                row["date"]
+            )
+            self.movements.append(movement)
+
     def calculate_totals(self):
         total_income=0
         total_expenses=0
@@ -121,6 +136,7 @@ class FinanceTracker:
             "balance":self.balance()
         }
         export_to_csv(rows,totals))
+
 
 
 
