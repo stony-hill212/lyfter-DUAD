@@ -1,4 +1,5 @@
 from datetime import datetime
+from persistence import append_to_csv
 from persistence import export_to_csv,load_from_csv
 
 date_format="%d/%m/%Y"
@@ -77,6 +78,8 @@ class FinanceTracker:
     def add_movement(self,title,amount,category_name,movement_type,date):
         if movement_type not in ["income","expenses"]:
             raise ValueError("Invalid movement")
+        if isinstance(date,str):
+            date=datetime.strptime(date,"%d/%m/%Y")
         category=self.get_category(category_name)
         if not category:
             raise ValueError("Invalid category")
@@ -117,6 +120,7 @@ class FinanceTracker:
             "expenses":self.total_expenses(),
             "balance":self.balance()
         }
-        export_to_csv(rows,totals)
+        export_to_csv(rows,totals))
+
 
 
