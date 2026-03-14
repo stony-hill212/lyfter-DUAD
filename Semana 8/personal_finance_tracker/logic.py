@@ -135,7 +135,7 @@ class FinanceTracker:
             "expenses":self.total_expenses(),
             "balance":self.balance()
         }
-        export_to_csv(rows,totals))
+        export_to_csv(rows,totals)
 
 
 
