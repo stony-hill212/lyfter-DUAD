@@ -70,11 +70,11 @@ class FinanceInterface:
         categories=[c.name for c in self.tracker.categories]
         layout=[
             [sg.Text(f"Add {movement_type}")],
-            [sg.Text("Title")],
+            [sg.Text("title")],
             [sg.Input(key="-TITLE-")],
             [sg.Text("Amount")],
             [sg.Input(key="-AMOUNT-")],
-            [sg.Text("Category")],
+            [sg.Text("category")],
             [
                 sg.Combo(
                     categories,
@@ -119,6 +119,7 @@ class FinanceInterface:
             return None
     
     def run(self):
+        self.update_table(self.tracker.movements)
         while True:
             event,values=self.window.read()
             if event in (sg.WIN_CLOSED,"Exit"):
@@ -133,6 +134,7 @@ class FinanceInterface:
                 self.handle_filter(values)
             elif event=="Export CSV":
                 self.tracker.export_csv()
+        self.window.close()
     
     def handle_add_category(self):
         window=self.category_window()
@@ -141,7 +143,7 @@ class FinanceInterface:
             if event in (sg.WIN_CLOSED,"Cancel"):
                 break
             if event=="Save":
-                name=values["-CATEGORY_NAME-"]
+                name=values["-CATEGORY_NAME-"].strip()
                 color=values["-CATEGORY_COLOR-"]
                 if not name:
                     sg.popup_error("Category name required")
@@ -160,25 +162,36 @@ class FinanceInterface:
             if event in (sg.WIN_CLOSED,"Cancel"):
                 break
             if event=="Save":
-                title=values["-TITLE-"]
-                amount=values["-AMOUNT-"]
+                title=values["-TITLE-"].strip()
+                amount_text=values["-AMOUNT-"].strip()
+                date_text=values["-DATE-"].strip()
                 category=values["-CATEGORY-"]
-                date_str=values["-DATE-"]
-                date=self.validate_date(date_str)
-                if not date:
+                if not title:
+                    sg.popup_error("Title cannot be empty.")
+                    continue
+                if not amount_text:
+                    sg.popup_error("Amount cannot be empty.")
                     continue
                 try:
-                    amount=float(amount)
+                    amount=float(amount_text)
                 except ValueError:
-                    sg.popup_error("Amount must be a number")
+                    sg.popup_error("Amount must be a number.")
                     continue
-                self.tracker.add_movement(
-                    title,
-                    amount,
-                    category,
-                    movement_type,
-                    date
-                )
+                if amount<=0:
+                    sg.popup_error("Amount must be greater than 0.")
+                    continue
+                try:
+                    date=datetime.strptime(date_text,date_format)
+                except ValueError:
+                    sg.popup_error("Date must be dd/mm/yyyy.")
+                    continue
+                if date>datetime.now():
+                    sg.popup_error("Date cannot be in future.")
+                    continue
+                if not category:
+                    sg.popup_error("Please select a category.")
+                    continue
+                self.tracker.add_movement(title,amount,category,movement_type,date)
                 self.update_table(self.tracker.movements)
                 break
         window.close()
