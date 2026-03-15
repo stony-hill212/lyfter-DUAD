@@ -1,6 +1,5 @@
 from datetime import datetime
-from persistence import append_to_csv
-from persistence import export_to_csv,load_from_csv
+from persistence import export_to_csv,load_from_csv,append_to_csv,initialize_csv
 
 date_format="%d/%m/%Y"
 
@@ -22,7 +21,7 @@ class Movement:
     
     def to_dict(self):
         return{
-            "date":self.date.strftime("%d/%m/%Y"),
+            "date":self.date.strftime(date_format),
             "title":self.title,
             "category":self.category.name,
             "type":self.movement_type,
@@ -34,48 +33,29 @@ class Movement:
 
 class FinanceTracker:
     def __init__(self):
+        initialize_csv()
         self.categories=[]
         self.movements=[]
         self.load_existing_data()
-
+    
     def load_existing_data(self):
         rows=load_from_csv()
         for row in rows:
-            category_name=row["category"]
-            if category_name not in self.categories:
-                self.categories[category_name]=Category(category_name,"#CCCCCC")
+            category_name=row["category"].strip()
+            category=self.get_category(category_name)
+            if not category:
+                category=self.add_category(category_name,"#CCCCCC")
             movement=Movement(
                 row["title"],
                 row["amount"],
-                self.categories[category_name],
+                category,
                 row["type"],
                 row["date"]
             )
             self.movements.append(movement)
 
     def calculate_totals(self):
-        total_income=0
-        total_expenses=0
-        for movement in self.movements:
-            if movement.movement_type=="income":
-                total_income+=movement.amount
-            elif movement.movement_type=="expenses":
-                total_expenses+=movement.amount
-        return{"income":total_income,"expenses":total_expenses}
-
-    def load_existing_data(self):
-        rows=load_from_csv()
-        for row in rows:
-            category=self.get_category(row["category"])
-            if not category:
-                category=self.add_category(row["category"],"#0B9181")
-            self.add_movement(
-                row["title"],
-                row["amount"],
-                row["category"],
-                row["type"],
-                row["date"]
-            )
+        return{"income":self.total_income(),"expenses":self.total_expenses()}
     
     def add_category(self,name,color):
         if self.get_category(name):
@@ -86,7 +66,7 @@ class FinanceTracker:
     
     def get_category(self,name):
         for c in self.categories:
-            if c.name==name:
+            if c.name.lower()==name.lower():
                 return c
         return None
     
@@ -94,12 +74,13 @@ class FinanceTracker:
         if movement_type not in ["income","expenses"]:
             raise ValueError("Invalid movement")
         if isinstance(date,str):
-            date=datetime.strptime(date,"%d/%m/%Y")
+            date=datetime.strptime(date,date_format)
         category=self.get_category(category_name)
         if not category:
             raise ValueError("Invalid category")
         movement=Movement(title,amount,category,movement_type,date)
         self.movements.append(movement)
+        append_to_csv(movement)
         return movement
     
     def filter_by_date(self,start_date,end_date):
@@ -112,14 +93,14 @@ class FinanceTracker:
     def total_income(self):
         total=0
         for m in self.movements:
-            if m.type=="income":
+            if m.movement_type=="income":
                 total+=m.amount
         return total
     
     def total_expenses(self):
         total=0
         for m in self.movements:
-            if m.type=="expenses":
+            if m.movement_type=="expenses":
                 total+=m.amount
         return total
     
@@ -127,15 +108,12 @@ class FinanceTracker:
         return self.total_income()-self.total_expenses()
     
     def export_csv(self):
-        rows=[]
-        for m in self.movements:
-            rows.append(m.to_dict())
         totals={
             "income":self.total_income(),
             "expenses":self.total_expenses(),
             "balance":self.balance()
         }
-        export_to_csv(rows,totals)
+        export_to_csv(self.movements,totals)
 
 
 
