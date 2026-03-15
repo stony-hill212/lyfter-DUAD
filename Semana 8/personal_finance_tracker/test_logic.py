@@ -2,9 +2,14 @@ import pytest
 from datetime import datetime
 from logic import FinanceTracker
 
+date_format="%d/%m/%Y"
+
 @pytest.fixture
 def tracker():
-    return FinanceTracker()
+    tracker=FinanceTracker()
+    tracker.categories=[]
+    tracker.movements=[]
+    return tracker
 
 def test_add_category(tracker: FinanceTracker):
     tracker.add_category("Food","#FF0000")
@@ -23,7 +28,7 @@ def test_add_expense(tracker: FinanceTracker):
         10,
         "Food",
         "expenses",
-        datetime.strptime("09/03/2026","%d/%m/%Y")
+        datetime.strptime("09/03/2026",date_format)
     )
     assert len(tracker.movements)==1
     assert tracker.movements[0].movement_type=="expenses"
@@ -35,7 +40,7 @@ def test_add_income(tracker: FinanceTracker):
         2000,
         "Salary",
         "income",
-        datetime.strptime("01/03/2026","%d/%m/%Y")
+        datetime.strptime("01/03/2026",date_format)
     )
     assert tracker.movements[0].movement_type=="income"
 
@@ -47,7 +52,7 @@ def test_invalid_movement_type(tracker: FinanceTracker):
             10,
             "Food",
             "invalid",
-            datetime.strptime("01/03/2026","%d/%m/%Y")
+            datetime.strptime("01/03/2026",date_format)
         )
 
 def test_filter_movements(tracker: FinanceTracker):
@@ -57,11 +62,11 @@ def test_filter_movements(tracker: FinanceTracker):
         10,
         "Food",
         "expenses",
-        datetime.strptime("01/03/2026","%d/%m/%Y")
+        datetime.strptime("01/03/2026",date_format)
     )
     results=tracker.filter_by_date(
-        datetime.strptime("28/02/2026","%d/%m/%Y"),
-        datetime.strptime("02/03/2026","%d/%m/%Y")
+        datetime.strptime("28/02/2026",date_format),
+        datetime.strptime("02/03/2026",date_format)
     )
     assert len(results)==1
 
@@ -72,14 +77,14 @@ def test_totals(tracker: FinanceTracker):
         10,
         "Food",
         "expenses",
-        datetime.strptime("01/03/2026","%d/%m/%Y")
+        datetime.strptime("01/03/2026",date_format)
     )
     tracker.add_movement(
         "job",
         50,
         "Food",
         "income",
-        datetime.strptime("01/03/2026","%d/%m/%Y")
+        datetime.strptime("01/03/2026",date_format)
     )
     totals=tracker.calculate_totals()
     assert totals["income"]==50
@@ -92,7 +97,7 @@ def test_movement_storage(tracker: FinanceTracker):
         3,
         "Transport",
         "expenses",
-        datetime.strptime("03/03/2026","%d/%m/%Y")
+        datetime.strptime("03/03/2026",date_format)
     )
     movement=tracker.movements[0]
     assert movement.title=="Uber"
