@@ -9,7 +9,7 @@ def append_to_csv(movement,target=file_name):
     with open(target,"a",newline="")as file:
         writer=csv.writer(file)
         writer.writerow([
-            movement.date,
+            movement.date.strftime(date_format),
             movement.title,
             movement.category.name,
             movement.movement_type,
@@ -17,50 +17,53 @@ def append_to_csv(movement,target=file_name):
         ])
 
 def initialize_csv(target=file_name):
-    if os.path.exists(file_name):
+    if os.path.exists(target):
         return
-    with open(file_name,"w",newline="")as file:
+    with open(target,"w",newline="",encoding="utf-8")as file:
         writer=csv.writer(file)
         writer.writerow(["Date","Title","Category","Type","Amount"])
 
-def export_to_csv(movements,totals):
-    with open(file_name,"w",newline="")as file:
-        writer=csv.writer(file)
-        writer.writerow(["Date","Title","Category","Type","Amount"])
-        for m in movements:
-            writer.writerow([
-                m["date"],
-                m["title"],
-                m["type"],
-                m["amount"]
-            ])
-        writer.writerow(["TOTAL INCOME", totals["income"]])
-        writer.writerow(["TOTAL EXPENSES", totals["expenses"]])
-        writer.writerow(["BALANCE", totals["balance"]])
-
-def load_from_csv():
+def load_from_csv(target=file_name):
     movements=[]
     try:
-        with open(file_name,"r")as file:
+        with open(target,"r",newline="",encoding="utf-8")as file:
             reader=csv.DictReader(file)
+            if not reader.fieldnames:
+                return []
             for row in reader:
-                if not row["Amount"]:
+                if not row.get("Amount"):
                     continue
-                if row["Date"].startswith("TOTAL"):
+                if row.get("Date","").startswith("TOTAL"):
                     break
-                date_str=row["Date"]
+                date_str=row.get("Date")
                 try:
-                    date=datetime.strptime(date_str,"%d/%m/%Y")
+                    date=datetime.strptime(date_str,date_format)
                 except ValueError:
                     date=datetime.fromisoformat(date_str)
                 movements.append({
                     "date":date,
-                    "title":row["Title"].strip().capitalize(),
-                    "category":row["Category"].strip().capitalize(),
-                    "type":row["Type"].strip().capitalize(),
-                    "amount":float(row["Amount"])
+                    "title":row.get("Title","").strip(),
+                    "category":row.get("Category").strip(),
+                    "type":row.get("Type","").strip(),
+                    "amount":float(row.get("Amount"))
                 })
     except FileNotFoundError:
-        pass
+        return []
     return movements
+
+def export_to_csv(movements,totals,target=file_name):
+    with open(target,"w",newline="")as file:
+        writer=csv.writer(file)
+        writer.writerow(["Date","Title","Category","Type","Amount"])
+        for m in movements:
+            writer.writerow([
+                m.date.strftime(date_format),
+                m.title,
+                m.category.name,
+                m.movement_type,
+                m.amount
+            ])
+        writer.writerow(["TOTAL INCOME", totals["income"]])
+        writer.writerow(["TOTAL EXPENSES", totals["expenses"]])
+        writer.writerow(["BALANCE", totals["balance"]])
 
