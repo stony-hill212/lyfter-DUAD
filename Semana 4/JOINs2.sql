@@ -39,7 +39,7 @@ INSERT INTO Books VALUES
 
 SELECT Books.Name AS Book, Authors.Name AS Author
 FROM Books
-INNER JOIN Authors ON Books.Author = Authors.ID;
+LEFT JOIN Authors ON Books.Author = Authors.ID;
 
 SELECT Books.Name
 FROM Books
