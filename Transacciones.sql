@@ -161,7 +161,7 @@ BEGIN
 
     IF v_stock_product1 < v_quantity_product1 THEN
         RAISE EXCEPTION 'Not enough items in stock for product 1';
-    END;
+    END IF;
 
     IF v_stock_product2 < v_quantity_product2 THEN
         RAISE EXCEPTION 'Not enough items in stock for product 2';
@@ -180,7 +180,7 @@ BEGIN
         v_bill_id,
         1,
         v_quantity_product1,
-        v_price_product1 * v_price_product1
+        v_quantity_product1 * v_price_product1
     ),
     (
         v_bill_id,
