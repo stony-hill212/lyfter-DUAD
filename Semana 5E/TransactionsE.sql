@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS Products (
 CREATE TABLE IF NOT EXISTS Bills (
     bill_id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
+    status VARCHAR(20) DEFAULT 'Completed', 
     bill_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total NUMERIC(10,2),
 
@@ -40,9 +41,6 @@ CREATE TABLE IF NOT EXISTS bill_details (
         FOREIGN KEY(product_id)
         REFERENCES Products(product_id)
 );
-
-ALTER TABLE Bills
-ADD COLUMN status VARCHAR(20) DEFAULT 'Completed';
 
 DO $$
 BEGIN
@@ -302,7 +300,7 @@ BEGIN
 
     UPDATE Bills
     SET status = 'Cancelled'
-    WHERE bill_id = 6;
+    WHERE bill_id = 2;
 
 END $$
 
@@ -338,7 +336,7 @@ BEGIN
     SELECT stock, price
     INTO v_stock_product3, v_price_product3
     FROM Products
-    WHERE product_id = 3;
+    WHERE product_id = 4;
 
     IF v_stock_product1 < v_quantity_product1 THEN
         RAISE EXCEPTION 'Insufficient stock for product 1';
@@ -399,7 +397,7 @@ BEGIN
 
     UPDATE Products 
     SET stock = stock - v_quantity_product3
-    WHERE product_id = 3;
+    WHERE product_id = 4;
 
 END $$;
 
@@ -426,4 +424,3 @@ BEGIN
     END IF;
 
 END $$;
-
