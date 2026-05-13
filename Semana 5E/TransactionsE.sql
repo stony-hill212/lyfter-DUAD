@@ -48,6 +48,7 @@ BEGIN
     INSERT INTO Users(full_name, email, phone)
     VALUES
     ('Jimmy Conway', 'jgent@yahoo.com', '8888-1111'),
+    ('Jon Jones', 'bones@ufc.com', '8888-3333'),
     ('Margaret Thatcher', 'cunt@aol.com', '8888-2222');
 
 END $$;
@@ -336,7 +337,7 @@ BEGIN
     SELECT stock, price
     INTO v_stock_product3, v_price_product3
     FROM Products
-    WHERE product_id = 4;
+    WHERE product_id = 3;
 
     IF v_stock_product1 < v_quantity_product1 THEN
         RAISE EXCEPTION 'Insufficient stock for product 1';
@@ -382,7 +383,7 @@ BEGIN
     ),
     (
         v_bill_id,
-        4,
+        3,
         v_quantity_product3,
         v_quantity_product3 * v_price_product3
     );
@@ -397,7 +398,7 @@ BEGIN
 
     UPDATE Products 
     SET stock = stock - v_quantity_product3
-    WHERE product_id = 4;
+    WHERE product_id = 3;
 
 END $$;
 
@@ -410,14 +411,14 @@ BEGIN
     SELECT stock
     INTO v_current_stock
     FROM Products
-    WHERE product_id = 7;
+    WHERE product_id = 4;
     IF v_current_stock <= 0 THEN
         RAISE EXCEPTION 'Product out of stock';
     END IF;
 
     UPDATE Products
     SET stock = stock - 1
-    WHERE product_id = 7
+    WHERE product_id = 4
     AND stock = v_current_stock;
     IF NOT FOUND THEN 
         RAISE EXCEPTION 'Stock changed by another transaction';
