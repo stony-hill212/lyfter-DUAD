@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Products (
 CREATE TABLE IF NOT EXISTS Bills (
     bill_id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    status VARCHAR(20) DEFAULT 'Completed', 
+    status VARCHAR(20) DEFAULT 'Pending', 
     bill_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total NUMERIC(10,2),
 
@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS bill_details (
     product_id INTEGER NOT NULL,
     quantity INTEGER NOT NULL,
     subtotal NUMERIC (10,2) NOT NULL,
+    delivered BOOLEAN DEFAULT FALSE,
 
     CONSTRAINT fk_bill
         FOREIGN KEY(bill_id)
@@ -42,28 +43,18 @@ CREATE TABLE IF NOT EXISTS bill_details (
         REFERENCES Products(product_id)
 );
 
-DO $$
-BEGIN
+INSERT INTO Users(full_name, email, phone)
+VALUES
+('Jimmy Conway', 'jgent@yahoo.com', '8888-1111'),
+('Jon Jones', 'bones@ufc.com', '8888-3333'),
+('Margaret Thatcher', 'cunt@aol.com', '8888-2222');
 
-    INSERT INTO Users(full_name, email, phone)
-    VALUES
-    ('Jimmy Conway', 'jgent@yahoo.com', '8888-1111'),
-    ('Jon Jones', 'bones@ufc.com', '8888-3333'),
-    ('Margaret Thatcher', 'cunt@aol.com', '8888-2222');
-
-END $$;
-
-DO $$
-BEGIN
-
-    INSERT INTO Products(product_name, price, stock)
-    VALUES
-    ('Gabagool', 7.50, 100),
-    ('Bialy', 2.75, 50),
-    ('Cannoli', 8.25, 80),
-    ('Vinegar peppers', 25.00, 1);
-
-END $$;
+INSERT INTO Products(product_name, price, stock)
+VALUES
+('Gabagool', 7.50, 100),
+('Bialy', 2.75, 50),
+('Cannoli', 8.25, 80),
+('Vinegar peppers', 25.00, 1);
 
 DO $$
 DECLARE
@@ -127,17 +118,9 @@ DO $$
 DECLARE
     v_user_exist INTEGER;
     v_bill_id INTEGER;
+    v_total NUMERIC(10,2) := 0;
 
-    v_stock_product1 INTEGER;
-    v_stock_product2 INTEGER;
-
-    v_price_product1 NUMERIC(10,2);
-    v_price_product2 NUMERIC(10,2);
-
-    v_total NUMERIC(10,2);
-
-    v_quantity_product1 INTEGER := 3;
-    v_quantity_product2 INTEGER := 2;
+    rec RECORD;
 
 BEGIN
     SELECT COUNT(*)
@@ -149,90 +132,84 @@ BEGIN
         RAISE EXCEPTION 'User does not exist';
     END IF;
 
-    SELECT stock, price
-    INTO v_stock_product1, v_price_product1
-    FROM Products
-    WHERE product_id = 1;
-
-    SELECT stock, price
-    INTO v_stock_product2, v_price_product2
-    FROM Products
-    WHERE product_id = 2;
-
-    IF v_stock_product1 < v_quantity_product1 THEN
-        RAISE EXCEPTION 'Not enough items in stock for product 1';
-    END IF;
-
-    IF v_stock_product2 < v_quantity_product2 THEN
-        RAISE EXCEPTION 'Not enough items in stock for product 2';
-    END IF;
-
-    v_total :=
-        (v_quantity_product1 * v_price_product1)+(v_quantity_product2*v_price_product2);
-
     INSERT INTO Bills(user_id, total)
-    VALUES (1, v_total)
+    VALUES (1, 0)
     RETURNING bill_id INTO v_bill_id;
 
-    INSERT INTO bill_details(bill_id, product_id, quantity, subtotal)
-    VALUES
-    (
-        v_bill_id,
-        1,
-        v_quantity_product1,
-        v_quantity_product1 * v_price_product1
-    ),
-    (
-        v_bill_id,
-        2,
-        v_quantity_product2,
-        v_quantity_product2 * v_price_product2
-    );
+    FOR rec INSERT
+        SELECT
+            p.product_id,
+            p.price,
+            p.stock,
+            x.quantity
+        FROM Products p
+        JOIN (
+            VALUES
+                (1, 3),
+                (2, 2)
+        ) AS x(product_id, quantity)
+        ON p.product_id = x.product_id
+    LOOP
+        IF rec.stock < rec.quantity THEN
+            RAISE EXCEPTION 'Not enough stock for product %',
+            rec.product_id;
+        END IF;
 
-    UPDATE Products
-    SET stock = stock - v_quantity_product1
-    WHERE product_id = 1;
+        INSERT INTO bill_details(
+            bill_id,
+            product_id,
+            quantity,
+            subtotal
+        )
+        VALUES (
+            v_bill_id,
+            rec.product_id,
+            rec.quantity,
+            rec.quantity * rec.price
+        );
 
-    UPDATE Products
-    SET stock = stock - v_quantity_product2
-    WHERE product_id = 2;
+        UPDATE Products
+        SET stock = stock - rec.quantity
+        WHERE product_id = rec.product_id;
+        v_total :=
+            v_total + (rec.quantity * rec.price);
+
+    END LOOP;
+
+    UPDATE Bills
+    SET total = v_total
+    WHERE bill_id = v_bill_id;
+
 END $$;
 
 DO $$
 DECLARE
     v_bill_exists INTEGER;
 
-    v_quantity_product1 INTEGER;
-    v_quantity_product2 INTEGER;
+    rec RECORD;
 
 BEGIN
     SELECT COUNT(*)
     INTO v_bill_exists
     FROM Bills
     WHERE bill_id = 1;
+
     IF v_bill_exists = 0 THEN
         RAISE EXCEPTION 'Bill does not exist';
     END IF;
 
-    SELECT quantity
-    INTO v_quantity_product1
-    FROM bill_details
-    WHERE bill_id = 1
-    AND product_id = 1;
-
-    SELECT quantity
-    INTO v_quantity_product2
-    FROM bill_details
-    WHERE bill_id = 1
-    AND product_id = 2;
-
-    UPDATE Products
-    SET stock = stock + v_quantity_product1
-    WHERE product_id = 1;
-
-    UPDATE Products
-    SET stock = stock + v_quantity_product2
-    WHERE product_id = 2;
+    FOR rec IN
+        SELECT
+            product_id,
+            quantity
+        FROM bill_details
+        WHERE bill_id = 1
+    LOOP
+        UPDATE Products
+        SET stock = stock + rec.quantity
+        WHERE product_id = rec.product_id;
+    
+    END LOOP;
 
     UPDATE Bills
     SET status = 'Returned'
@@ -258,8 +235,8 @@ DECLARE
     v_bill_exists INTEGER;
     v_bill_status VARCHAR(20);
 
-    v_quantity_product1 INTEGER;
-    v_quantity_product2 INTEGER;
+    rec RECORD;
+
 BEGIN
     SELECT COUNT(*)
     INTO v_bill_exists
@@ -279,31 +256,24 @@ BEGIN
         RAISE EXCEPTION 'Invoice is not pending';
     END IF;
 
-    SELECT quantity
-    INTO v_quantity_product1
-    FROM bill_details
-    WHERE bill_id = 2
-    AND product_id = 1;
-
-    SELECT quantity
-    INTO v_quantity_product2
-    FROM bill_details
-    WHERE bill_id = 2
-    AND product_id = 2;
-
-    UPDATE Products  
-    SET stock = stock + v_quantity_product1
-    WHERE product_id = 1;
-
-    UPDATE products
-    SET stock = stock + v_quantity_product2
-    WHERE product_id = 2;
+    FOR rec IN
+        SELECT
+            product_id,
+            quantity
+        FROM bill_details
+        WHERE bill_id = 2
+        AND delivered = FALSE
+    LOOP
+        UPDATE Products
+        SET stock = stock + rec.quantity
+        WHERE product_id = rec.product_id;
+    END LOOP;
 
     UPDATE Bills
     SET status = 'Cancelled'
     WHERE bill_id = 2;
 
-END $$
+END $$;
 
 DO $$
 DECLARE
@@ -337,7 +307,7 @@ BEGIN
     SELECT stock, price
     INTO v_stock_product3, v_price_product3
     FROM Products
-    WHERE product_id = 3;
+    WHERE product_id = 4;
 
     IF v_stock_product1 < v_quantity_product1 THEN
         RAISE EXCEPTION 'Insufficient stock for product 1';
@@ -383,7 +353,7 @@ BEGIN
     ),
     (
         v_bill_id,
-        3,
+        4,
         v_quantity_product3,
         v_quantity_product3 * v_price_product3
     );
@@ -398,7 +368,7 @@ BEGIN
 
     UPDATE Products 
     SET stock = stock - v_quantity_product3
-    WHERE product_id = 3;
+    WHERE product_id = 4;
 
 END $$;
 
