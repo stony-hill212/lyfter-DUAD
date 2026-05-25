@@ -44,4 +44,4 @@ lyfter_car_rental/
 │
 └── README.m
 
-# Nota: Todos los endpoints solicitados fueron probados en Postman exitosamente.
+# Nota: Todos los métodos solicitados fueron probados en Postman exitosamente.
