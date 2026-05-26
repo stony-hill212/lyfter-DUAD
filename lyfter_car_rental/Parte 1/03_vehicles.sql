@@ -28,3 +28,22 @@ VALUES
 
 ALTER TABLE lyfter_car_rental.vehicles
 ADD COLUMN vehicle_status VARCHAR(20) NOT NULL DEFAULT 'available';
+
+INSERT INTO vehicles (
+    make,
+    model,
+    year,
+    vehicle_condition,
+    vehicle_status
+)
+SELECT
+    'Make ' || num,
+    'Model ' || num,
+    2010 + (num % 14),
+    CASE
+        WHEN num % 3=0 THEN 'Excellent'
+        WHEN num % 3=1 THEN 'Good'
+        ELSE 'Fair'
+    END,
+    'available'
+FROM generate_series(11, 50) AS num;
