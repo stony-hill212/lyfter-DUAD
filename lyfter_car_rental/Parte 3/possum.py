@@ -5,5 +5,5 @@ def get_connection():
         host="localhost",
         database="jackrabbit_db",
         user="postgres",
-        password="Sierramadre08"
+        password="Possumpassword"
     )
