@@ -1,3 +1,4 @@
+from psycopg2.extras import RealDictCursor
 from flask import Flask, request, jsonify
 from possum import get_connection
 
@@ -7,7 +8,7 @@ app= Flask(__name__)
 def create_user():
     data=request.json
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     query= """
         INSERT INTO lyfter_car_rental.users
         (
@@ -38,7 +39,7 @@ def create_user():
 def create_vehicle():
     data=request.json
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     query= """
         INSERT INTO lyfter_car_rental.vehicles
         (
@@ -67,7 +68,7 @@ def create_vehicle():
 def create_rental():
     data=request.json
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     rental_query= """
         INSERT INTO lyfter_car_rental.rentals
         (
@@ -98,7 +99,7 @@ def create_rental():
 def update_vehicle_status(vehicle_id):
     data=request.json
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     query= """
         UPDATE lyfter_car_rental.vehicles
         SET vehicle_status= %s
@@ -114,7 +115,7 @@ def update_vehicle_status(vehicle_id):
 def update_user_status(user_id):
     data=request.json
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     query= """
         UPDATE lyfter_car_rental.users
         SET account_status= %s
@@ -126,37 +127,41 @@ def update_user_status(user_id):
     connection.close()
     return jsonify({"message": "User updated"}), 200
 
-@app.route("/rentals/<int:rental_id>/complete", methods=["PUT"])
-def complete_rental(rental_id):
+@app.route("/rentals/<int:rental_id>", methods=["PUT"])
+def update_rental_status(rental_id):
+    data= request.json
     connection=get_connection()
-    cursor=connection.cursor()
-    rental_query= """
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
+    query= """
         UPDATE lyfter_car_rental.rentals
-        SET rental_status= 'completed'
+        SET rental_status= %s
         WHERE rental_id= %s
-        RETURNING vehicle_id
+        RETURNING vehicle_id, rental_status
     """
-    cursor.execute(rental_query, (rental_id,))
-    vehicle_id=cursor.fetchone()[0]
-    vehicle_query= """
-        UPDATE lyfter_car_rental.vehicles
-        SET vehicle_status= 'available'
-        WHERE vehicle_id= %s
-    """
-    cursor.execute(vehicle_query, (vehicle_id,))
+    cursor.execute(query, data["rental_status"], rental_id)
+    result=cursor.fetchone()
+    vehicle_id=result[0]
+    rental_status=result[1]
+    if rental_status=="completed":
+        vehicle_query= """
+            UPDATE lyfter_car_rental.vehicles
+            SET vehicle_status= 'available'
+            WHERE vehicle_id= %s
+        """
+        cursor.execute(vehicle_query, (vehicle_id,))
     connection.commit()
     cursor.close()
     connection.close()
-    return jsonify({"message": "Rental completed"}), 200
+    return jsonify({"message": "Rental status updated"}), 200
 
 @app.route("/users/<int:user_id>/overdue", methods=["PUT"])
 def mark_overdue(user_id):
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     query= """
         UPDATE lyfter_car_rental.users
         SET overdue= TRUE
-        WHERE vehicle_id= %s
+        WHERE user_id= %s
     """
     cursor.execute(query, (user_id,))
     connection.commit()
@@ -167,7 +172,7 @@ def mark_overdue(user_id):
 @app.route("/users", methods=["GET"])
 def get_users():
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     query= "SELECT * FROM lyfter_car_rental.users WHERE 1=1"
     filters=request.args
     for key, value in filters.items():
@@ -181,7 +186,7 @@ def get_users():
 @app.route("/vehicles", methods=["GET"])
 def get_vehicles():
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     query= "SELECT * FROM lyfter_car_rental.vehicles WHERE 1=1"
     filters=request.args
     for key, value in filters.items():
@@ -195,7 +200,7 @@ def get_vehicles():
 @app.route("/rentals", methods=["GET"])
 def get_rentals():
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     query= "SELECT * FROM lyfter_car_rental.rentals WHERE 1=1"
     filters=request.args
     for key, value in filters.items():
@@ -209,7 +214,7 @@ def get_rentals():
 @app.route("/vehicles", methods=["DELETE"])
 def delete_vehicles():
     connection=get_connection()
-    cursor=connection.cursor()
+    cursor=connection.cursor(cursor_factory=RealDictCursor)
     filters=request.args
     query= """DELETE FROM lyfter_car_rental.vehicles WHERE 1=1"""
     for key, value in filters.items():
