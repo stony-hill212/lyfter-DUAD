@@ -1,0 +1,16 @@
+SET search_path TO lyfter_car_rental;
+
+INSERT INTO rentals (
+    user_id,
+    vehicle_id,
+    rental_status
+)
+VALUES (
+    1,
+    1,
+    'active'
+);
+
+UPDATE vehicles
+SET vehicle_status= 'rented'
+WHERE vehicle_id= 1;
