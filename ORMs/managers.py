@@ -1,5 +1,6 @@
 from database import SessionLocal
 from models import User, Address, Car
+from sqlalchemy import func
 
 class UserManager:
     def create_user(self, name, email):
@@ -10,13 +11,15 @@ class UserManager:
         )
         session.add(user)
         session.commit()
-        return user
+        user_id=user.id
+        session.close()
+        return user_id
 
     def get_all_users(self):
         session=SessionLocal()
-        user=session.query(User).all()
+        all_users=session.query(User).all()
         session.close()
-        return user
+        return all_users
 
     def delete_user(self, user_id):
         session=SessionLocal()
@@ -35,6 +38,37 @@ class UserManager:
             session.commit()
         session.close()
         return user
+    
+    def users_with_multiple_cars(self):
+        session=SessionLocal()
+        users=(
+            session.query(User)
+            .join(Car)
+            .group_by(User.id)
+            .having(func.count(Car.id)>1)
+            .all()
+        )
+        session.close()
+        return users
+    
+    def get_user_details(self, user_id):
+        session=SessionLocal()
+        user=session.get(User, user_id)
+        if not user:
+            session.close()
+            return None
+        result={
+            "id":user.id,
+            "name":user.name,
+            "email":user.email,
+            "addresses":[Address.street for address in user.addresses],
+            "cars":[
+                f"{car.make} {car.model}"
+                for car in user.cars
+            ]
+        }
+        session.close()
+        return result
 
 class AddressManager:
     def create_address(self, street, user_id):
@@ -42,8 +76,22 @@ class AddressManager:
         address=Address(street=street, user_id=user_id)
         session.add(address)
         session.commit()
+        address_id=address.id
         session.close()
-        return address
+        return address_id
+    
+    def address_with_street(self):
+        session=SessionLocal()
+        addresses=(
+            session.query(Address)
+            .filter(
+                (Address.street.contains("Street")) | 
+                (Address.street.contains("St"))
+            )
+            .all()
+        )
+        session.close()
+        return addresses
     
     def get_all_addresses(self):
         session=SessionLocal()
@@ -77,8 +125,9 @@ class CarManager:
         )
         session.add(car)
         session.commit()
+        car_id=car.id
         session.close()
-        return car
+        return car_id
     
     def get_all_cars(self):
         session=SessionLocal()
@@ -110,3 +159,11 @@ class CarManager:
             car.user_id=user_id
             session.commit()
         session.close()
+
+    def get_unassigned_cars(self):
+        session=SessionLocal()
+        cars=session.query(Car)\
+                    .filter(Car.user_id==None)\
+                    .all()
+        session.close()
+        return cars
