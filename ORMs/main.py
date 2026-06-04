@@ -71,6 +71,42 @@ print("---addresses with street----")
 for address in address_manager.address_with_street():
     print(address.id, address.street)
 
+cars=car_manager.get_unassigned_cars()
+print(f"Found {len(cars)} unassigned cars\n")
+for car in cars:
+    print(
+        car.id,
+        car.make,
+        car.model,
+        car.user_id
+    )
+
+users=user_manager.users_with_multiple_cars()
+print(
+    f"Found {len(users)} users with multiple cars\n"
+)
+for user in users:
+    print(
+        user.id,
+        user.name
+    )
+
+addresses=address_manager.address_with_street()
+print(
+    f"Found {len(addresses)} addresses with the word 'Street'\n"
+)
+for address in addresses:
+    print(
+        address.id,
+        address.street
+    )
+
+p_users=user_manager.get_all_users()
+for user in p_users:
+    print(
+        user.id,
+        user.name
+    )
 details=user_manager.get_user_details(3)
 print(details)
 
