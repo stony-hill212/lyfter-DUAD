@@ -2,11 +2,15 @@ from flask import Flask
 from config import Config
 from extensions import db, jwt, migrate
 from models.user import User
+from models.login_history import LoginHistory
 from routes.auth import auth_bp
 from routes.me import me_bp
 from routes.fruits_r import fruit_bp
-from routes.purchase import purchase_bp
+from routes.purchase_r import purchase_bp
 from routes.invoice_r import invoice_bp
+from routes.contact_routes import contact_bp
+from models.purchase_m import Purchase
+from models.purchaseItems import PurchaseItem
 
 def create_app():
     app=Flask(__name__)
@@ -19,6 +23,7 @@ def create_app():
     app.register_blueprint(fruit_bp)
     app.register_blueprint(purchase_bp)
     app.register_blueprint(invoice_bp)
+    app.register_blueprint(contact_bp)
     return app
 
 app=create_app()
