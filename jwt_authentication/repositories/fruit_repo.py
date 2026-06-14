@@ -9,6 +9,16 @@ class FruitRepository:
         return fruit
     
     @staticmethod
+    def create_fruit(name, price, amount, arrival_date):
+        fruit=Fruit(
+            name=name,
+            price=price,
+            amount=amount,
+            arrival_date=arrival_date
+        )
+        return FruitRepository.create(fruit)
+    
+    @staticmethod
     def get_all():
         return Fruit.query.all()
     
@@ -23,4 +33,8 @@ class FruitRepository:
     
     @staticmethod
     def update():
+        db.session.commit()
+
+    @staticmethod
+    def save():
         db.session.commit()
