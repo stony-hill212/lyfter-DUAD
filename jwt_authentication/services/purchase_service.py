@@ -1,23 +1,34 @@
+from extensions import db
+from models.purchase_m import Purchase
+from models.purchaseItems import PurchaseItem
+from repositories.purchase_repo import PurchaseRepo
 from repositories.fruit_repo import FruitRepository
-from repositories.invoice_repository import InvoiceRepository
 
 class PurchaseService:
     @staticmethod
-    def purchase(user_id, fruit_id, quantity):
-        fruit=FruitRepository.get_by_id(fruit_id)
-        if fruit is None:
-            return None, "Fruit not found"
-        if fruit.amount<quantity:
-            return None, "Insufficient stock"
-        subtotal=fruit.price*quantity
-        invoice=InvoiceRepository.create_invoice(user_id, subtotal)
-        InvoiceRepository.create_invoice_details(
-            invoice.id,
-            fruit.id,
-            quantity,
-            fruit.price,
-            subtotal
-        )
-        fruit.amount-=quantity
-        InvoiceRepository.commit()
-        return invoice, None
+    def create_purchase(items):
+        try:
+            purchase=Purchase()
+            PurchaseRepo.create_purchase(purchase)
+            db.session.flush()
+            for item_data in items:
+                fruit=FruitRepository.get_by_id(item_data["fruit_id"])
+                if not fruit:
+                    raise ValueError(f"Fruit {item_data['fruit_id']} not found")
+                quantity=item_data["quantity"]
+                if quantity<=0:
+                    raise ValueError("Quantity must be greater than 0")
+                if fruit.amount<quantity:
+                    raise ValueError(f"Not enough stock for {fruit.name}")
+                fruit.amount-=quantity
+                purchase_item=PurchaseItem(
+                    purchase_id=purchase.id,
+                    fruit_id=fruit.id,
+                    quantity=quantity
+                )
+                PurchaseRepo.create_item(purchase_item)
+            PurchaseRepo.commit()
+            return purchase
+        except Exception:
+            PurchaseRepo.rollback()
+            raise
