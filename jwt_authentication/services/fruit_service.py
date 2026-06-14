@@ -17,6 +17,7 @@ class FruitService:
         fruit.name=data.get("name", fruit.name)
         fruit.price=data.get("price", fruit.price)
         fruit.amount=data.get("amount", fruit.amount)
+        fruit.arrival_date=data.get("arrival_date", fruit.arrival_date)
         FruitRepository.update()
         return fruit
     
