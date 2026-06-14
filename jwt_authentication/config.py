@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
+
 
 load_dotenv()
 
@@ -14,3 +16,5 @@ class Config:
     JWT_ALGORITHM="RS256"
     JWT_PRIVATE_KEY=PRIVATE_KEY
     JWT_PUBLIC_KEY=PUBLIC_KEY
+    JWT_ACCESS_TOKEN_EXPIRES=timedelta(minutes=15)
+    JWT_REFRESH_TOKEN_EXPIRES=timedelta(days=7)
