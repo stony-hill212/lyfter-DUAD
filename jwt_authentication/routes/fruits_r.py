@@ -24,6 +24,7 @@ def create_fruit():
     return jsonify(fruit.to_dict()), 201
 
 @fruit_bp.route("/fruits",methods=["GET"])
+@jwt_required()
 def get_fruits():
     fruits=FruitService.get_all_fruits()
     return jsonify([fruit.to_dict() for fruit in fruits]), 200
