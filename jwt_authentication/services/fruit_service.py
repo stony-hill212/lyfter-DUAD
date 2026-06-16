@@ -1,6 +1,16 @@
 from repositories.fruit_repo import FruitRepository
+from datetime import datetime
 
 class FruitService:
+    @staticmethod
+    def create_fruit(data):
+        return FruitRepository.create_fruit(
+            data["name"],
+            data["price"],
+            data["amount"],
+            datetime.strptime(data["arrival_date"],"%Y-%m-%d").date()
+        )
+
     @staticmethod
     def get_all_fruits():
         return FruitRepository.get_all()
