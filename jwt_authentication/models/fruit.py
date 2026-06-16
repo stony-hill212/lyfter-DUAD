@@ -7,7 +7,6 @@ class Fruit(db.Model):
     price=db.Column(db.Float, nullable=False)
     arrival_date=db.Column(db.Date, nullable=False)
     amount=db.Column(db.Integer, nullable=False)
-    purchase_items=db.relationship("PurchaseItem", backref="fruit", lazy=True)
     def to_dict(self):
         return{
             "id":self.id,
