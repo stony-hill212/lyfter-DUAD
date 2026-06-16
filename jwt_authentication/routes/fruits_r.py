@@ -13,14 +13,7 @@ fruit_bp=Blueprint("fruit",__name__)
 @admin_required
 def create_fruit():
     data=request.get_json()
-    fruit=Fruit(
-        name=data["name"],
-        price=data["price"],
-        arrival_date=datetime.strptime(data["arrival_date"],"%Y-%m-%d").date(),
-        amount=data["amount"]
-    )
-    db.session.add(fruit)
-    db.session.commit()
+    fruit=FruitService.create_fruit(data)
     return jsonify(fruit.to_dict()), 201
 
 @fruit_bp.route("/fruits",methods=["GET"])
@@ -30,6 +23,7 @@ def get_fruits():
     return jsonify([fruit.to_dict() for fruit in fruits]), 200
 
 @fruit_bp.route("/fruits/<int:fruit_id>",methods=["GET"])
+@jwt_required()
 def get_item(fruit_id):
     fruit=FruitService.get_fruit_by_id(fruit_id)
     if not fruit:
