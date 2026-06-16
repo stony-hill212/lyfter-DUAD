@@ -9,10 +9,12 @@ purchase_bp=Blueprint("purchase",__name__)
 def purchase():
     data=request.get_json()
     try:
-        purchase=PurchaseService.create_purchase(data["items"])
+        user_id=int(get_jwt_identity())
+        invoice=PurchaseService.create_purchase(user_id, data["items"])
         return jsonify({
             "message": "Purchase completed",
-            "purchase_id": purchase.id
+            "invoice_id": invoice.id,
+            "total": invoice.total
         }), 201
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
