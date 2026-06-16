@@ -9,8 +9,6 @@ from routes.fruits_r import fruit_bp
 from routes.purchase_r import purchase_bp
 from routes.invoice_r import invoice_bp
 from routes.contact_routes import contact_bp
-from models.purchase_m import Purchase
-from models.purchaseItems import PurchaseItem
 
 def create_app():
     app=Flask(__name__)
