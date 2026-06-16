@@ -27,6 +27,10 @@ class InvoiceRepository:
         )
         db.session.add(details)
         return details
+
+    @staticmethod
+    def rollback():
+        db.session.rollback()
     
     @staticmethod
     def commit():
