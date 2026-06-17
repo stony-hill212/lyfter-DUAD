@@ -43,18 +43,19 @@ def get_contacts():
 @contact_bp.route("/contacts/<int:contact_id>",methods=["PUT"])
 @jwt_required()
 def update_contact(contact_id):
-    data=request.get_json()
-    user_id=int(get_jwt_identity())
-    role=get_jwt().get("role")
-    contact=ContactService.update_contact(
-        contact_id,
-        data,
-        user_id,
-        role
-    )
-    if contact is None:
+    try:
+        data=request.get_json()
+        user_id=int(get_jwt_identity())
+        role=get_jwt().get("role")
+        contact=ContactService.update_contact(
+            contact_id,
+            data,
+            user_id,
+            role
+        )
+    except ValueError:
         return jsonify({"message": "Contact not found"}), 404
-    if contact=="FORBIDDEN":
+    except PermissionError:
         return jsonify({"message": "Forbidden"}), 403
     return jsonify({
         "id":contact.id,
@@ -67,11 +68,12 @@ def update_contact(contact_id):
 @contact_bp.route("/contacts/<int:contact_id>",methods=["DELETE"])
 @jwt_required()
 def delete_contact(contact_id):
-    user_id=int(get_jwt_identity())
-    role=get_jwt().get("role")
-    result=ContactService.delete_contact(contact_id, user_id, role)
-    if result is None:
+    try:
+        user_id=int(get_jwt_identity())
+        role=get_jwt().get("role")
+        result=ContactService.delete_contact(contact_id, user_id, role)
+    except ValueError:
         return jsonify({"message": "Contact not found"}), 404
-    if result=="FORBIDDEN":
+    except PermissionError:
         return jsonify({"message": "Forbidden"}), 403
     return jsonify({"message": "Contact deleted"}), 200
