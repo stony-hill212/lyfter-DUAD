@@ -10,7 +10,7 @@ DELETE FROM invoices;
 DELETE FROM invoice_details;
 
 --don't use--
-DROP TABLE users CASCADE;
+DROP TABLE purchase_items CASCADE;
 
 
 UPDATE users
