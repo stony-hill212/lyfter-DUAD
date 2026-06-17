@@ -22,9 +22,9 @@ class ContactService:
     def update_contact(contact_id, data, user_id, role):
         contact=ContactRepo.get_by_id(contact_id)
         if not contact:
-            return None
+            raise ValueError("Contact not found")
         if role!="ADMIN" and contact.owner_id!=user_id:
-            return "FORBIDDEN"
+            raise PermissionError("Admin access required")
         contact.name=data.get("name", contact.name)
         contact.phone=data.get("phone", contact.phone)
         contact.email=data.get("email", contact.email)
@@ -35,8 +35,8 @@ class ContactService:
     def delete_contact(contact_id, user_id, role):
         contact=ContactRepo.get_by_id(contact_id)
         if not contact:
-            return None
+            raise ValueError("Contact not found")
         if role!="ADMIN" and contact.owner_id!=user_id:
-            return "FORBIDDEN"
+            raise PermissionError("Admin access required")
         ContactRepo.delete(contact)
         return True
