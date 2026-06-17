@@ -10,6 +10,11 @@ class LoginHistoryService:
             success=success
         )
         return LoginHistoryRepository.create(history)
+        
     @staticmethod
-    def get_all():
-        return LoginHistoryRepository.get_all()
+    def get_all(user_id):
+        return LoginHistoryRepository.get_all(user_id)
+    
+    @staticmethod
+    def get_all_info():
+        return LoginHistoryRepository.get_all_info()
