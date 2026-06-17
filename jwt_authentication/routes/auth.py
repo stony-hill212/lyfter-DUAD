@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt, create_refresh_token
 from services.auth_service import AuthService
 from services.login_history_service import LoginHistoryService
+from utils.decorators import admin_required
 
 auth_bp=Blueprint("auth", __name__)
 
@@ -55,13 +56,27 @@ def refresh_token():
     )
     return jsonify({"access_token":access_token}), 200
 
+@auth_bp.route("/login-history/<int:user_id>",methods=["GET"])
+@jwt_required()
+@admin_required
+def get_login_history(user_id):
+    history=LoginHistoryService.get_all(user_id)
+    return jsonify([
+        {
+            "id":item.id,
+            "user_id":item.user_id,
+            "timestamp":item.timestamp.isoformat(),
+            "ip_address":item.ip_address,
+            "success":item.success
+        }
+        for item in history
+    ]), 200
+
 @auth_bp.route("/login-history",methods=["GET"])
 @jwt_required()
-def get_login_history():
-    claims=get_jwt()
-    if claims.get("role")!="ADMIN":
-        return jsonify({"message": "Admins only"}), 403
-    history=LoginHistoryService.get_all()
+@admin_required
+def get_all_login_history():
+    history=LoginHistoryService.get_all_info()
     return jsonify([
         {
             "id":item.id,
