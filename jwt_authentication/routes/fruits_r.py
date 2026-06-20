@@ -20,7 +20,7 @@ def create_fruit():
 @jwt_required()
 def get_fruits():
     fruits=FruitService.get_all_fruits()
-    return jsonify([fruit.to_dict() for fruit in fruits]), 200
+    return jsonify(fruits), 200
 
 @fruit_bp.route("/fruits/<int:fruit_id>",methods=["GET"])
 @jwt_required()
@@ -28,7 +28,7 @@ def get_item(fruit_id):
     fruit=FruitService.get_fruit_by_id(fruit_id)
     if not fruit:
         return jsonify({"message": "Fruit not found"}), 404
-    return jsonify(fruit.to_dict()), 200
+    return jsonify(fruit), 200
 
 @fruit_bp.route("/fruits/<int:fruit_id>",methods=["PUT"])
 @jwt_required()
