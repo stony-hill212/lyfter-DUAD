@@ -25,7 +25,7 @@ class FruitService:
         print("ALL FRUITS CACHE MISS")
         fruits=FruitRepository.get_all()
         fruits_data=[fruit.to_dict() for fruit in fruits]
-        redis_client.set(cache_key, json.dumps(fruits_data, default=str))
+        redis_client.set(cache_key, json.dumps(fruits_data, default=str),ex=600)
         return fruits_data
     
     @staticmethod
@@ -40,7 +40,7 @@ class FruitService:
         if not fruit:
             return None
         fruit_data=fruit.to_dict()
-        redis_client.set(cache_key, json.dumps(fruit_data, default=str))
+        redis_client.set(cache_key, json.dumps(fruit_data, default=str),ex=600)
         return fruit_data
     
     @staticmethod
