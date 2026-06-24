@@ -10,7 +10,7 @@ migrate=Migrate()
 jwt=JWTManager()
 
 redis_client=redis.Redis(
-    host="elm-zephyr-crayon-22560.db.redis.io",
+    host="stony_hill",
     port=XXXX,
     password="redises-stony_hill-password",
     decode_responses=True
