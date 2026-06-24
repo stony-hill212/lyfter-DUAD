@@ -14,6 +14,8 @@ fruit_bp=Blueprint("fruit",__name__)
 def create_fruit():
     data=request.get_json()
     fruit=FruitService.create_fruit(data)
+    if isinstance(fruit, dict)and "error" in fruit:
+        return jsonify(fruit), 400
     return jsonify(fruit.to_dict()), 201
 
 @fruit_bp.route("/fruits",methods=["GET"])
