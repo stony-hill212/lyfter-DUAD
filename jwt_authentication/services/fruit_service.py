@@ -6,6 +6,20 @@ import json
 class FruitService:
     @staticmethod
     def create_fruit(data):
+        required_fields=[
+            "name",
+            "price",
+            "amount",
+            "arrival_date"
+        ]
+        missing_fields=[field for field in required_fields if field not in data]
+        if missing_fields:
+            return{
+                "error":(
+                    "Missing required fields: "
+                    +", ".join(missing_fields)
+                )
+            }
         fruit=FruitRepository.create_fruit(
             data["name"],
             data["price"],
