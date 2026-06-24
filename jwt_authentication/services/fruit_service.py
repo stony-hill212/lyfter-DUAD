@@ -51,7 +51,9 @@ class FruitService:
         fruit.name=data.get("name", fruit.name)
         fruit.price=data.get("price", fruit.price)
         fruit.amount=data.get("amount", fruit.amount)
-        fruit.arrival_date=data.get("arrival_date", fruit.arrival_date)
+        arrival_date=data.get("arrival_date")
+        if arrival_date:
+            fruit.arrival_date=datetime.strptime(arrival_date, "%Y-%m-%d").date()
         FruitRepository.update()
         redis_client.delete(f"fruit: {fruit_id}")
         redis_client.delete("fruits:all")
