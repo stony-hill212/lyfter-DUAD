@@ -38,9 +38,11 @@ git clone <repository_url>
 Crear ambiente virtual:
 
 python -m venv venv
-Activate environment:
+
+Activar ambiente:
 venv\Scripts\activate
-Install dependencies:
+
+Instalar dependencias:
 pip install -r requirements.txt
 
 
@@ -49,16 +51,22 @@ pip install -r requirements.txt
 Crear un archivo .env con:
 
 DATABASE_URL=
+
 SECRET_KEY=
+
 REDIS_URL=
+
 JWT_PRIVATE_KEY=
+
 JWT_PUBLIC_KEY=
 
 
 ## Database Setup
 
 flask db init
+
 flask db migrate -m "Initial migration"
+
 flask db upgrade
 
 
@@ -70,24 +78,33 @@ python app.py
 ## Authentication
 
 POST /auth/register
+
 POST /auth/login
+
 GET /auth/profile
 
 
 ## Products
 
 POST /products/
+
 GET /products/
+
 GET /products/<id>
+
 PUT /products/<id>
+
 DELETE /products/<id>
 
 
 ## Cart
 
 GET /cart/
+
 POST /cart/add
+
 PUT /cart/update
+
 DELETE /cart/remove/<product_id>
 
 
@@ -99,6 +116,7 @@ POST /purchases/checkout
 ## Invoices
 
 GET /invoice/
+
 GET /invoice/<invoice_number>
 
 
