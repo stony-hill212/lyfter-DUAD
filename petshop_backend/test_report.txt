@@ -1,0 +1,43 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.2, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\dzela\Downloads\Flask\petshop_backend\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\dzela\Downloads\Flask\petshop_backend
+collecting ... collected 14 items
+
+tests/auth_test.py::test_profile_requires_token PASSED                   [  7%]
+tests/auth_test.py::test_register_user PASSED                            [ 14%]
+tests/auth_test.py::test_login_user PASSED                               [ 21%]
+tests/test_products.py::test_get_products_requires_token PASSED          [ 28%]
+tests/test_products.py::test_create_product PASSED                       [ 35%]
+tests/test_products.py::test_get_products PASSED                         [ 42%]
+tests/test_products.py::test_user_cannot_create PASSED                   [ 50%]
+tests/test_products.py::test_product_not_found PASSED                    [ 57%]
+tests/test_purchase.py::test_checkout_empty_cart PASSED                  [ 64%]
+tests/test_purchase.py::test_successful_checkout PASSED                  [ 71%]
+tests/test_return.py::test_return_requires_token PASSED                  [ 78%]
+tests/test_return.py::test_invalid_invoice PASSED                        [ 85%]
+tests/test_return.py::test_successful_return PASSED                      [ 92%]
+tests/test_return.py::test_duplicate_return PASSED                       [100%]
+
+============================== warnings summary ===============================
+tests/auth_test.py: 1 warning
+tests/test_products.py: 6 warnings
+tests/test_purchase.py: 18 warnings
+tests/test_return.py: 39 warnings
+  C:\Users\dzela\Downloads\Flask\petshop_backend\venv\Lib\site-packages\sqlalchemy\sql\schema.py:3623: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return util.wrap_callable(lambda ctx: fn(), fn)  # type: ignore
+
+tests/test_products.py::test_get_products
+  C:\Users\dzela\Downloads\Flask\petshop_backend\venv\Lib\site-packages\cachelib\redis_base.py:70: DeprecationWarning: Call to deprecated setex. (Use 'set' instead.) -- Deprecated since version 2.6.12.
+    result = self._write_client.setex(
+
+tests/test_products.py::test_product_not_found
+  C:\Users\dzela\Downloads\Flask\petshop_backend\venv\Lib\site-packages\cachelib\redis_base.py:99: DeprecationWarning: Call to deprecated setex. (Use 'set' instead.) -- Deprecated since version 2.6.12.
+    pipe.setex(name=f"{self._get_prefix()}{key}", value=dump, time=timeout)
+
+tests/test_return.py::test_successful_return
+  C:\Users\dzela\Downloads\Flask\petshop_backend\tests\test_return.py:55: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    product=Product.query.get(product_id)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 14 passed, 67 warnings in 8.27s =======================
