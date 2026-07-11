@@ -32,10 +32,10 @@ Redis caching, asi como pruebas (unit testing) automatizadas.
 
 ## Installation
 
-Clone the repository:
+Clonar el repositorio:
 git clone <repository_url>
 
-Create virtual environment:
+Crear ambiente virtual:
 
 python -m venv venv
 Activate environment:
