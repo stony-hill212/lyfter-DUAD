@@ -20,3 +20,7 @@ htmlcov/
 
 # Log files
 *.log
+
+# Keys
+private.pem
+public.pem
