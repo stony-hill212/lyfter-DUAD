@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class Enrollment Form</title>
+</head>
+<body>
+
+    <h1>Class Enrollment Form</h1>
+
+    <form action="thanks.html" method="get">
+
+        <fieldset>
+            <legend>Student Information</legend>
+
+            <label for="fullname">Full Name:</label><br>
+            <input type="text" id="fullname" name="fullname"><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br><br>
+
+            <label for="identification">ID or Driver's License Number:</label><br>
+            <input type="text" id="identification" name="identification"><br><br>
+
+            <label for="course">Choose a Class:</label><br>
+
+            <select id="course" name="course">
+                <option value="web_development">Web Development</option>
+                <option value="cybersecurity">Cybersecurity</option>
+                <option value="networks">Networks</option>
+            </select>
+
+            <br><br>
+
+            <input type="checkbox" id="terms" name="terms">
+
+            <label for="terms">
+                I accept the terms and conditions
+            </label>
+
+            <br><br>
+
+            <input type="submit" value="Enroll">
+
+        </fieldset>
+
+    </form>
+
+</body>
+</html>

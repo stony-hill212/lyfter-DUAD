@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reading Habits Survey</title>
+</head>
+<body>
+
+    <h1>Reading Habits Survey</h1>
+
+    <form action="summary.html" method="get">
+
+        <fieldset>
+            <legend>Participant Information</legend>
+
+            <label for="fullname">Name:</label><br>
+            <input type="text" id="fullname" name="fullname"><br><br>
+
+            <label for="age">Age:</label><br>
+            <input type="text" id="age" name="age"><br><br>
+
+        </fieldset>
+
+        <br>
+
+        <fieldset>
+            <legend>Reading Frequency</legend>
+
+            <input type="radio" id="daily" name="reading" value="Daily">
+            <label for="daily">Daily</label><br>
+
+            <input type="radio" id="weekly" name="reading" value="Weekly">
+            <label for="weekly">Weekly</label><br>
+
+            <input type="radio" id="rarely" name="reading" value="Rarely">
+            <label for="rarely">Rarely</label>
+
+        </fieldset>
+
+        <br>
+
+        <fieldset>
+            <legend>Book Recommendation</legend>
+
+            <label for="recommendation">
+                Recommend your favorite book:
+            </label><br>
+
+            <textarea id="recommendation"
+                    name="recommendation"
+                    rows="6"
+                    cols="40">
+            </textarea>
+
+        </fieldset>
+
+        <br>
+
+        <input type="submit" value="Submit Survey">
+
+    </form>
+
+</body>
+</html>
