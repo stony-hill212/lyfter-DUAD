@@ -52,12 +52,12 @@ h1 {
     font-size: 11px;
     text-decoration: none;
 }
-@media (max-width: 900xp) {
+@media (max-width: 900px) {
     .cards-container {
         grid-template-columns: repeat(2, 1fr);
     }
 }
-@media (max-width: 600xp) {
+@media (max-width: 600px) {
     .cards-container {
         grid-template-columns: 1fr;
         padding: 20px 15px;
