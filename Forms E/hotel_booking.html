@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Booking Form</title>
+</head>
+<body>
+
+    <h1>Hotel Booking Form</h1>
+
+    <form action="confirmation.html" method="get">
+
+        <fieldset>
+            <legend>Guest Information</legend>
+
+            <label for="fullname">Name:</label><br>
+            <input type="text" id="fullname" name="fullname"><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br><br>
+
+            <label for="arrival">Arrival Date:</label><br>
+            <input type="date" id="arrival" name="arrival"><br><br>
+
+            <label for="checkout">Checkout Date:</label><br>
+            <input type="date" id="checkout" name="checkout"><br><br>
+
+        </fieldset>
+
+        <br>
+
+        <fieldset>
+            <legend>Room Type</legend>
+
+            <input type="radio" id="standard" name="room" value="Standard">
+            <label for="standard">Standard</label><br>
+
+            <input type="radio" id="premium" name="room" value="Premium">
+            <label for="premium">Premium</label><br>
+
+            <input type="radio" id="suite" name="room" value="Suite">
+            <label for="suite">Suite</label>
+
+        </fieldset>
+
+        <br>
+
+        <fieldset>
+            <legend>Additional Services</legend>
+
+            <input type="checkbox" id="breakfast" name="breakfast" value="Breakfast">
+            <label for="breakfast">Breakfast</label><br>
+
+            <input type="checkbox" id="wifi" name="wifi" value="WiFi">
+            <label for="wifi">WiFi</label><br>
+
+            <input type="checkbox" id="parking" name="parking" value="Parking">
+            <label for="parking">Parking</label>
+
+        </fieldset>
+
+        <br>
+
+        <input type="submit" value="Book Now">
+
+    </form>
+
+</body>
+</html>
