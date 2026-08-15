@@ -1,0 +1,141 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    background-color: #f1f1f3;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+}
+.ranking {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 45px 0 60px;
+}
+.title {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+.title h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    white-space: nowrap;
+}
+.week {
+    flex: 1;
+    height: 18px;
+    background-color: white;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    white-space: nowrap;
+}
+.table-header {
+    display: grid;
+    grid-template-columns: 10% 1fr 10% 8% 8% 8%;
+    background-color: #244cc5;
+    color: white;
+    min-height: 70px;
+    align-items: center;
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 0 0;
+}
+.rank-header {
+    width: 10%;
+    padding-left: 25px;
+}
+
+.fighter-header {flex: 1;}
+
+.hall-header {
+    width: 10%;
+    text-align: center;
+}
+.stat-header {
+    width: 8%;
+    text-align: center;
+}
+.fighter-row {
+    display: grid;
+    grid-template-columns: 10% 1fr 10% 8% 8% 8%;
+    min-height: 145px;
+    align-items: stretch;
+    background-color: white;
+    border-bottom: 1px solid #d5d5d5;
+}
+.rank {
+    background-color: #10111a;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 35px;
+    font-size: 34px;
+    font-weight: bold;
+}
+.fighter-info {
+    display: flex;
+    align-items: center;
+}
+.fighter-info img {
+    width: 125px;
+    height: 145px;
+    object-fit: cover;
+    margin-right: 25px;
+}
+.fighter-info h2 {
+    margin: 0 0 5px;
+    font-size: 21px;
+    font-weight: 700;
+}
+.fighter-info p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+.hall,
+.stat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+.hall {
+    background-color: #eeeeef;
+    color: #111;
+    font-size: 24px;
+}
+.stat {background-color: white;}
+
+.tittle-bar {
+    flex: 1;
+    height: 18px;
+    background-color: white;
+}
+@media (max-width: 800px) {
+    .ranking {padding: 25px 10px 40px;}
+    .title h1 {font-size: 28px;}
+    .tittle-bar {display: none;}
+    .week {font-size: 12px;}
+    .fighter-info img {
+        width: 90px;
+        height: 120px;
+    }
+    .fighter-info h2 {font-size: 17px;}
+    .fighter-info p {font-size:  13px;}
+    .rank {
+        padding-left: 15px;
+        font-size: 26px;
+    }
+    .hall,
+    .stat {font-size: 17px;}
+}
