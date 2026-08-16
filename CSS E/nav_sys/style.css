@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: royalblue;
+}
+h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    white-space: nowrap;
+}
+nav {
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: brown;
+}
+li a {
+    display: block;
+    color: bisque;
+    text-decoration: none;
+    padding: 15px 25px;
+}
+li a:hover {background-color: blueviolet;}
