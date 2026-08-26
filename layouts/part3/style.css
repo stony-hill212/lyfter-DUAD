@@ -1,0 +1,230 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html {scroll-behavior: smooth;}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #111111;
+    color: #ffffff;
+}
+
+.header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background-color: #111111;
+    border-bottom: 2px solid #e63946;
+    position: relative;
+    z-index: 10;
+}
+.logo {
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    width: 150px;
+    height: 150px;
+}
+
+.navigation {
+    display: flex;
+    gap: 30px;
+}
+.navigation a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease; 
+}
+.navigation a:hover {color: #e63946;}
+
+.hero {
+    position: relative;
+    height: 600px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.hero > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+.hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+    z-index: 2;
+}
+.hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+    padding: 20px;
+}
+.hero::after h1 {
+    font-size: 4rem;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+}
+.hero-content p {
+    font-size: 1.3rem;
+    color: #dddddd;
+    margin-bottom: 30px;
+}
+.hero-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #e63946;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: transform 0.2 ease, background-color 0.2s ease;
+}
+.hero-button:hover {
+    background-color: #b91c2a;
+    transform: scale(1.05);
+}
+.benefits {
+    padding: 80px 40px;
+    text-align: center;
+    background-color: #181818;
+}
+.benefits > h2 {
+    font-size: 2rem;
+    margin-bottom: 45px;
+    letter-spacing: 3px;
+}
+.benefit-cards {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+.benefit-card {
+    flex: 1;
+    max-width: 330px;
+    padding: 35px 25px;
+    background-color: #222222;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    transition: transform 0.25s ease,
+                background-color 0.25s ease,
+                border-color 0.25s ease;
+}
+.benefit-card:hover {
+    transform: scale(1.06);
+    background-color: #292929;
+    border-color: #e63946;
+}
+.benefit-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+.benefit-card h3 {
+    margin-bottom: 15px;
+    color: #e63946;
+    letter-spacing: 1px;
+}
+.benefit-card p {
+    color: #bbbbbb;
+    line-height: 1.6;
+}
+.contact {
+    padding: 90px 30px;
+    text-align: center;
+    background-color: #101010;
+}
+.contact-content {
+    max-width: 700px;
+    margin: auto;
+}
+.contact h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    letter-spacing: 3px;
+}
+.contact p {
+    color: #bbbbbb;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+.contact-button {
+    display: inline-block;
+    padding: 14px 30px;
+    background-color: #e63946;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.contact-button:hover {
+    background-color: #b91c2a;
+    transform: scale(1.05);
+}
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 40px;
+    background-color: #0b0b0b;
+    color: #777777;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 800px) {
+    .header {padding: 10px 20px;}
+    .navigation {gap: 15px;}
+    .hero {height: 500px;}
+    .hero-content h1 {font-size: 3rem;}
+    .benefit-cards {flex-wrap: wrap;}
+    .benefit-card {min-width: 280px;}
+}
+@media (max-width: 600px) {
+    .header {
+        height: auto;
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    .navigation {gap: 20px;}
+    .hero {height: 450px;}
+    .hero-content h1 {
+        font-size: 2.2rem;
+        letter-spacing: 2px;
+    }
+    .hero-content p {font-size: 1rem;}
+    .benefits {padding: 60px 20px;}
+    .benefit-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+    .benefit-card {
+        width: 100%;
+        max-width: 400px;
+    }
+    .contact {padding: 70px 20px;}
+    .contact h2 {font-size: 2rem;}
+    .footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 20px;
+    }
+}
