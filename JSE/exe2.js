@@ -1,7 +1,6 @@
 function removeDuplicates(numbers) {
     const uniqueNumbers= [];
     for (const number of numbers) {
-        console.log(number, uniqueNumbers)
         if (!uniqueNumbers.includes(number)) {
             uniqueNumbers.push(number);
         }
