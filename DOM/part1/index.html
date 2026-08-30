@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DOM Manipulation</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Elements</h1>
+
+        <div class="buttons">
+            <button id="addButton">Add Element</button>
+            <button id="removeButton">Remove All</button>
+        </div>
+        <ol id="Elements"></ol>
+    </div>
+
+    <script>
+
+        const addButton= document.getElementById("addButton");
+        const removeButton= document.getElementById("removeButton");
+        const list= document.getElementById("Elements");
+        addButton.addEventListener("click", function () {
+            const newItem= document.createElement("li");
+            newItem.textContent= "New element";
+            list.appendChild(newItem);
+        });
+        removeButton.addEventListener("click", function () {
+            list.innerHTML= "";
+        });
+
+    </script>
+
+</body>
+</html>

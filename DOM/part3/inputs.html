@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Registration</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Registration Form</h1>
+
+        <form>
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+
+            <p>Are you an employee?</p>
+
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="employee" value="yes">
+                    Yes
+                </label>
+                <label>
+                    <input type="radio" name="employee" value="no" checked>
+                    No
+                </label>
+            </div>
+            <div id="employeeField" class="hidden">
+                <label for="employeeId">Employee ID</label>
+                <input type="text" id="employeeId" name="employeeId">
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
