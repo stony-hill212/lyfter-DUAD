@@ -6,11 +6,9 @@ let hasInformation= false;
 
 processButton.addEventListener("click", function () {
     if (userInput.value.trim()!== "") {
-        displayText.textContent= userInput.value= "";
-        hasInformation= true;
-    } else if (hasInformation) {
+        displayText.textContent= userInput.value;
         userInput.value= "";
+    } else if (displayText.textContent!== "") {
         displayText.textContent= "";
-        hasInformation= false;
     }
 });
