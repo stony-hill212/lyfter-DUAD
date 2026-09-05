@@ -8,11 +8,17 @@ increaseButton.addEventListener("click", function () {
     count++;
     counter.textContent= count;
     decreaseButton.disabled= false;
+    counter.classList.remove("zero");
+    counter.classList.add("grow");
+    setTimeout(function () {counter.classList.remove("grow");},150);
 });
 decreaseButton.addEventListener("click", function () {
     if (count>0) {
         count--;
         counter.textContent= count;
     }
-    if (count===0) {decreaseButton.disabled= true;}
+    if (count===0) {
+        decreaseButton.disabled= true;
+        counter.classList.add("zero");
+    }
 });
