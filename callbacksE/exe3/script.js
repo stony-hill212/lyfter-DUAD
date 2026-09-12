@@ -3,12 +3,11 @@ const colorName= document.getElementById("colorName");
 const colorButton= document.getElementById("colorButton");
 
 const colors= [
-    "red",
-    "blue",
-    "green",
-    "yellow",
-    "cyan",
-    "pink"
+    "#FF5733",
+    "#33FF57",
+    "#3357FF",
+    "#F5FF33",
+    "#FF33F6",
 ];
 
 function generateColor(callback) {
