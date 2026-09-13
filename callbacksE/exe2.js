@@ -16,17 +16,17 @@ const fightersList2= [
 ];
 function compareFighters(list1, list2, callback) {
     const repeatedFighters= [];
-    for (let i=0; i< list1.length; i++) {
-        if (list2.includes(list1[i])) {
-            repeatedFighters.push(list1[i]);
+    for (const name of list1) {
+        if (list2.includes(name)) {
+            repeatedFighters.push(name);
         }
     }
     callback(repeatedFighters);
 }
 function showRepeatedFighters(fighters) {
     console.log("Fighters included in both lists:");
-    for (let i=0; i<fighters.length; i++) {
-        console.log(fighters[i]);
+    for (const fighter of fighters) {
+        console.log(fighter)
     }
 }
 
