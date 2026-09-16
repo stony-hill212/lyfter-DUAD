@@ -1,6 +1,6 @@
 async function getUser() {
     try {
-        const response= await fetch("https://reqres.in/api/users/23");
+        const response= await fetch("https://reqres.in/api/users/2");
         if (!response.ok) {
             throw new Error("User was not found");
         }
