@@ -23,5 +23,6 @@ const word4= new Promise(resolve=> {
 });
 
 Promise.all([word1, word2, word3, word4]).then(words=> {
-    console.log(`${words[1]} ${words[3]} ${words[0]} ${words[2]}`);
+    const sentence= `${words[1][0].toUpperCase()}${words[1].slice(1)} ${words[3]} ${words[0]} ${words[2]}`;
+    console.log(sentence);
 });
