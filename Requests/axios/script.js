@@ -13,6 +13,27 @@ const updateProductColor= document.getElementById("updateProductColor");
 const updateProductButton= document.getElementById("updateProduct");
 const updateMessage= document.getElementById("updateMessage");
 
+function createProductCard(product) {
+    const productElement= document.createElement("div");
+    productElement.classList.add("product");
+    const title= document.createElement("h2");
+    title.textContent= product.name;
+    const idParagraph= document.createElement("p");
+    const idLabel= document.createElement("strong");
+    idLabel.textContent= "ID: ";
+    idParagraph.appendChild(idLabel);
+    idParagraph.appendChild(document.createTextNode(product.id));
+    const dataParagraph= document.createElement("p");
+    const dataLabel= document.createElement("strong");
+    dataLabel.textContent= "Data: ";
+    dataParagraph.appendChild(dataLabel);
+    dataParagraph.appendChild(document.createTextNode(JSON.stringify(product.data ?? {})));
+    productElement.appendChild(title);
+    productElement.appendChild(idParagraph);
+    productElement.appendChild(dataParagraph);
+    return productElement;
+}
+
 async function getProducts() {
     try {
         const response= await axios.get("https://api.restful-api.dev/objects");
@@ -20,13 +41,7 @@ async function getProducts() {
         const productsWithData= products.filter(product=> product.data);
         productsContainer.innerHTML= "";
         productsWithData.forEach(product=> {
-            const productElement= document.createElement("div");
-            productElement.classList.add("product");
-            productElement.innerHTML= `
-                <h2>${product.name}</h2>
-                <p><strong>ID:</strong> ${product.id}</p>
-                <p><strong>Data:</strong> ${JSON.stringify(product.data)}</p>
-            `;
+            const productElement= createProductCard(product);
             productsContainer.appendChild(productElement);
         });
         if (productsWithData.length===0) {
@@ -46,7 +61,7 @@ async function createProduct(productInfo) {
     );
     return response.data;
 }
-const productInfo= {
+const mmaGloves= {
     name: "MMA Sparring Gloves",
     data: {
         brand: "ONX",
@@ -55,21 +70,11 @@ const productInfo= {
         material: "Goat Leather",
         weight: "4 oz"
     }
-}
+};
 
 addProductButton.addEventListener("click", async()=> {
-    const productInfo= {
-        name: "MMA Sparring Gloves",
-        data: {
-            brand: "ONX",
-            size: "4 oz",
-            color: "Black",
-            material: "Goat Leather",
-            weight: "4 oz"
-        }
-    };
     try {
-        const createdProduct= await createProduct(productInfo);
+        const createdProduct= await createProduct(mmaGloves);
         addMessage.textContent=
             `Product "${createdProduct.name}" was created successfully`;
         console.log(createdProduct);
@@ -78,7 +83,7 @@ addProductButton.addEventListener("click", async()=> {
         console.error(error);
     }
 });
-//ff808181a09d98f701a0d7b3974910e2//
+
 
 async function getProductById(id) {
     const response= await axios.get(`https://api.restful-api.dev/objects/${id}`);
@@ -93,16 +98,10 @@ findProductButton.addEventListener("click", async()=> {
     }
     try {
         const product= await getProductById(id);
-        foundProduct.innerHTML= `
-            <div class="product">
-                <h2>${product.name}</h2>
-                <p><strong>ID:</strong> ${product.id}</p>
-                <p><strong>Data:</strong> ${JSON.stringify(product.data)}</p>
-            </div>
-        `;
+        foundProduct.replaceChildren(createProductCard(product));
         findMessage.textContent= "";
     } catch (error) {
-        foundProduct.innerHTML= "";
+        foundProduct.replaceChildren();
         findMessage.textContent= "Product not found.";
         console.error(error);
     }
@@ -123,17 +122,16 @@ updateProductButton.addEventListener("click", async()=> {
         updateMessage.textContent= "Please complete all the fields.";
         return;
     }
-    const updatedInfo= {
-        name: newName,
-        data: {
-            brand: "ONX",
-            size: "4 oz",
-            color: newColor,
-            material: "Goat Leather",
-            weight: "4 oz"
-        }
-    };
     try {
+        const product= await getProductById(id);
+        const updatedInfo= {
+            ...product,
+            name: newName,
+            data: {
+                ...product.data,
+                color: newColor
+            }
+        };
         const updatedProduct= await updateProduct(id, updatedInfo);
         updateMessage.textContent= `Product "${updatedProduct.name}" was updated successfully.`;
         console.log(updatedProduct);
