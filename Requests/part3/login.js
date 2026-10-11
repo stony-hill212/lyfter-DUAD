@@ -1,3 +1,5 @@
+const savedUser= localStorage.getItem("currentUser");
+if (savedUser) {window.location.href= "profile.html";}
 const loginForm= document.getElementById("loginForm");
 const userIdInput= document.getElementById("userId");
 const passwordInput= document.getElementById("password");
@@ -24,10 +26,14 @@ loginForm.addEventListener("submit", async(event)=> {
     }
     try {
         const user= await loginUser(id, password);
-        localStorage.setItem("currentUser", JSON.stringify(user));
+        localStorage.setItem("currentUser", JSON.stringify({id: user.id}));
         window.location.href= "profile.html";
     } catch(error) {
-        loginMessage.textContent= "Login failed. Please check your ID and password.";
+        if (error.response?.status===404) {
+            loginMessage.textContent= "User not found.";
+        } else {
+            loginMessage.textContent= "Login failed. Please check your ID and password.";
+        }
         console.error(error);
     }
 });
