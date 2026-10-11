@@ -1,3 +1,5 @@
+const savedUser= localStorage.getItem("currentUser");
+if (savedUser) {window.location.href= "profile.html";}
 const registerForm= document.getElementById("registerForm");
 const nameInput= document.getElementById("name");
 const emailInput= document.getElementById("email");
@@ -10,7 +12,7 @@ async function registerUser(userInfo) {
     );
     return response.data;
 }
-registerForm.addEventListener("submit", async()=> {
+registerForm.addEventListener("submit", async(event)=> {
     event.preventDefault();
     const userInfo= {
         name: nameInput.value.trim(),
@@ -21,8 +23,8 @@ registerForm.addEventListener("submit", async()=> {
     };
     try {
         const registeredUser= await registerUser(userInfo);
-        localStorage.setItem("currentUser", JSON.stringify(registeredUser));
-        alert(`User created successfully! Your ID is ${registeredUser.id}`);
+        localStorage.setItem("currentUser", JSON.stringify({id: registeredUser.id}));
+        alert(`User created successfully! Your ID is <${registeredUser.id}>.`);
         window.location.href= "profile.html";
         console.log(registeredUser);
     } catch (error) {
