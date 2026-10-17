@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Farley's 📲 💻</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>My Profile</h1>
+    <main class="profile-container">
+        <section class="profile-card">
+            <h2>Profile Details</h2>
+            <p><strong>Name:</strong> <span id="profileName">Loading...</span></p>
+            <p><strong>Address:</strong> <span id="profileAddress">Loading...</span></p>
+            <button id="editButton" type="button" disabled>
+                Edit Profile
+            </button>
+        </section>
+        <form id="editForm" hidden>
+            <h2>Edit Your Profile</h2>
+            <label for="nameInput">Name</label>
+            <input id="nameInput" name="name" type="text" required>
+            <label for="addressInput">Address</label>
+            <input id="addressInput" name="address" type="text" required>
+            <div class="form-buttons">
+                <button type="submit" id="saveButton">Save</button>
+                <button type="button" id="cancelButton">Cancel</button>
+            </div>
+        </form>
+        <p id="message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="session.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
