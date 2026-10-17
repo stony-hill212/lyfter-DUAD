@@ -1,0 +1,165 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.9)), #111;
+    color: #f5f5f5;
+    font-family: Arial, Helvetica, sans-serif, sans-serif;
+}
+
+.register-container,
+.login-container h1,
+.profile-container h1,
+.password-container h1 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+.register-container h2,
+.login-container h2,
+.profile-container h2,
+.password-container h2 {
+    margin-bottom: 30px;
+    color: #aaa;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    outline: none;
+    background: #111;
+    color: #f5f5f5;
+    font-size: 1rem;
+    transition: 0.3s ease;
+}
+input::placeholder {color: #777;}
+input:focus {
+    border-color: #f5f5f5;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+}
+
+button {
+    margin-top: 5px;
+    padding: 14px 20px;
+    border: 2px solid #f5f5f5;
+    border-radius: 6px;
+    background: transparent;
+    color: #f5f5f5;
+    font-size: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+button:hover {
+    background: #f5f5f5;
+    color: #111;
+    transform: scale(1.03);
+}
+button:active {transform: scale(0.98);}
+
+#registerMessage,
+#loginMessage,
+#passwordMessage {
+    min-height: 25px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.profile-info {
+    margin-top: 20px;
+    padding: 20px;
+    background: #111;
+    border: 1px solid #444;
+    border-radius: 8px;
+    text-align: left;
+}
+.profile-info p {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+.profile-info p:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+@media (max-width: 600px) {
+    body {padding: 15px;}
+    .register-container,
+    .login-container,
+    .profile-container,
+    .password-container {padding: 25px 20px;}
+    .register-container h1,
+    .login-container h1,
+    .profile-container h1,
+    .password-container h1 {font-size: 1.5rem;}
+    button {width: 100%;}
+}
+
+#loginMessage {
+    min-height: 25px;
+    margin-top: 20px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+.profile-actions button {width: 100%;}
+.secondary-button {
+    border-color: #666;
+    color: #aaa;
+}
+.secondary-button:hover {
+    background: #333;
+    color: #fff;
+}
+
+.error-message {
+    margin-top: 20px;
+    font-weight: bold;
+}
+.success-message {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.profile-info h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.profile-info p {color: #ccc;}
+.profile-info strong {color: #f5f5f5;}
+#logoutButton {
+    border-color: #777;
+    color: #aaa;
+}
+#logoutButton:hover {
+    background: #333;
+    color: #fff;
+}

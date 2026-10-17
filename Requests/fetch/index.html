@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Supply Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="store">
+        <h1>🥊 Sports Supply Store</h1>
+        <button id="loadProducts">Load Products</button>
+        <p id="message"></p>
+        <div id="products"></div>
+        <section class="add-product">
+            <h2>Add New Product</h2>
+            <button id="addProduct">Add boxing gloves</button>
+            <p id="addMessage"></p>
+        </section>
+        <section class="find-product">
+            <h2>Find a Product</h2>
+            <input
+                type="text"
+                id="productId"
+                placeholder="Enter product ID"
+            >
+            <button id="findProduct">Find Product</button>
+            <div id="foundProduct"></div>
+            <p id="findMessage"></p>
+        </section>
+        <section class="update-product">
+            <h2>Update Product</h2>
+            <input
+                type="text"
+                id="updateProductId"
+                placeholder="Product ID"
+            >
+            <input
+                type="text"
+                id="updateProductName"
+                placeholder="New product name"
+            >
+            <input
+                type="text"
+                id="updateProductColor"
+                placeholder="New color"
+            >
+            <button id="updateProduct">Update Product</button>
+            <p id="updateMessage"></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
